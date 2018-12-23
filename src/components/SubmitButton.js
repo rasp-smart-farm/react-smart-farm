@@ -15,7 +15,7 @@ const SubmitButton = (props) => {
 			<div className='socialNets'>
 				<FaGooglePlus className='socialNetsIcon' onClick={() => window.location = "https://plus.google.com/"}/>
 				<FaTwitter className='socialNetsIcon' onClick={() => window.location = "https://twitter.com/"} />
-				<FaFacebook className='socialNetsIcon'onClick={() => window.location = "https://facebook.com/"} />
+				<FaFacebook className='socialNetsIcon'onClick={() => window.location = "https://www.facebook.com/nguyen.thanhphuc.370"} />
 			</div>
 		)
 	} else {

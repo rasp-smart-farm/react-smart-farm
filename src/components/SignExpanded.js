@@ -63,14 +63,14 @@ class SignExpanded extends Component {
 			.then(function (response) {
 				if (response.hasOwnProperty("data")) {
 					if (response.data.error === 1) {
-						console.log(response.data);
+						self.setState({open: true, message: response.data.data});
 					} else if (response.data.error === 0) {
-						console.log(response.data);
+						self.setState({open: true, message: response.data.data});
 					}
 				}
 			})
 			.catch(function (error) {
-				console.log(error);
+				self.setState({open: true, message: "Connection Error. Please check your internet!"});
 			})
 	}
 
@@ -92,7 +92,7 @@ class SignExpanded extends Component {
 				}
 			})
 			.catch(function (error) {
-				console.log(error);
+				self.setState({open: true, message: "Connection Error. Please check your internet!"});
 			})
 	}
 
@@ -121,7 +121,7 @@ class SignExpanded extends Component {
 			}}>
 				{(() => {if (this.state.open) {
 					return (<Confirm 
-						header="Error"
+						header="Alert"
 						size="large"
 						cancelButton="Refresh"
 						confirmButton="OK"

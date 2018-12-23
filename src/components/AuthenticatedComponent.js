@@ -8,7 +8,7 @@ export default function withAuthenticated(WrappedComponent) {
 	return class extends React.Component {
 		constructor(props) {
 			super(props);
-			this.state = { isLoggedIn: false, open: false, show: false };
+			this.state = { info: [], isLoggedIn: false, open: false, show: false };
 		}
 
 		async componentWillMount() {
@@ -23,12 +23,14 @@ export default function withAuthenticated(WrappedComponent) {
 									isLoggedIn: true,
 									isAuthorize: true,
 									show: false,
-									open: true
+									open: true,
+									info: response.data.data[0]
 								}))
 							} else {
 								self.setState(() => ({
 									show: true,
-									open: true
+									open: true,
+									info: response.data.data[0]
 								}))
 							}
 						}

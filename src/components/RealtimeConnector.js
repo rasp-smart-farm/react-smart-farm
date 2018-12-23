@@ -21,7 +21,7 @@ export default class RealtimeConnector extends Component {
 				<div className="menu">
 					<MenuPage />
 				</div>
-				<Connector mqttProps="ws://pi.toannhu.com:8080">
+				<Connector mqttProps="ws://tts.toannhu.com:8080">
 					<RealtimeInfo data={this.props.data} />
 				</Connector>
 				<footer>

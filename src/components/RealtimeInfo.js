@@ -1,72 +1,71 @@
 import React, {Component} from 'react';
 import { subscribe } from 'mqtt-react';
-import { Table, Checkbox } from "semantic-ui-react";
+import { Table, Dropdown } from "semantic-ui-react";
+import ControlDevice from './ControlDevice';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import "semantic-ui-css/semantic.min.css";
 import "./RealtimeInfo.css";
 import "./App.css";
 
-const ControlLed = (e) => {
+const DropdownSelectNode = (e) => {
+	let options = e.node.map(item => ({ text: item, value: item }));
 	return (
-		<div align="center">
-			{(() => "Led " + e.id + "  " )()}
-			<Checkbox id={e.id} defaultChecked={e.status} toggle onClick={(event, data) => clickButton(event, data, e.props)} />
-		</div>
-	)}
-
-//Them vao phan check error code 
-const clickButton = (event, data, props) => {
-	if (data["checked"] === true) {
-		axios.get('http://pi.toannhu.com:3000/region/on/' + data["id"])
-			.then(response => {
-				if (response.data.error === 0) {
-					const { mqtt } = props;
-					mqtt.publish('myTopic', "Hello World");
-				}
-			})
-			.catch(error => {
-				alert("Fail to connect server! Please try again!");
-			})
-	} else if (data["checked"] === false) {
-		axios.get('http://pi.toannhu.com:3000/region/off/' + data["id"])
-			.then(response => {
-				if (response.data.error === 0) {
-					const { mqtt } = props;
-					mqtt.publish('myTopic', "Hello World");
-				}
-			})
-			.catch(error => {
-				alert("Fail to connect server! Please try again!");
-			})
-	}
+		<Dropdown placeholder='Select Node to Control' selection options={options} onChange={e.onChange}/>
+	)
 }
 
 class TableMqtt extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { field: [], leds: [] };
+		this.state = { field: [], devices: {}, node: [] };
 	} 
 
+	handleChange = (e, { value }) => {
+		let self = this;
+		axios.get('http://pi.toannhu.com:3000/region/getDevices?node=' + value)
+			.then(response => {
+				self.setState(() => ({
+					devices: response.data.data[0]
+				}))
+			})
+			.catch(error => console.log(error));
+	}
+
 	componentDidMount = () => {
-		axios.get('http://pi.toannhu.com:3000/region/getLedStatus')
-			.then(response => response.data)
-			.catch(error => console.log(error))
-			.then(result => this.setState({ leds: result.data }));
+		let token = Cookies.get('token');
+		let self = this;
+		axios.get('http://pi.toannhu.com:4000/users/getInfo', {headers:{'Authorization': `Bearer ${token}`}})
+			.then(function (response) {
+				if (response.data.error === 0 && response.data.hasOwnProperty("data")) {
+					if (response.data.data[0]["role_id"] === 2) {
+						let node_list = JSON.parse(response.data.data[0]["node_control"])["name"];
+						if (node_list.length > 0) {
+							self.setState(() => ({
+								node: node_list
+							}))	
+						}
+						
+					}
+				}
+			})
+			.catch(function (error) {
+			});
 	}
 	
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.data !== this.props.data) { 
 			if (!this.state.field.some(e => e.name === this.props.data[0].name)) {
-			this.setState(prevState => ({
-				field: [...this.state.field, this.props.data[0]]}));
+			this.setState({
+				field: [...this.state.field, this.props.data[0]]});
 			} else {
 				let id = this.state.field.findIndex(e => e.name === this.props.data[0].name);
 				let obj = this.state.field.slice();
 				if (id > -1) {
 					obj.splice(id, 1);
 				}
-				this.setState(prevState => ({
-					field: [...obj, this.props.data[0]]}));
+				this.setState({
+					field: [...obj, this.props.data[0]]});
 			}
 		}
 	}
@@ -74,11 +73,8 @@ class TableMqtt extends Component {
 	render() {
 		return (
 			<div>
-				{this.state.leds.map(e => {
-					if (Object.keys(e).length !== 0 && e.constructor === Object) {
-						return <ControlLed id={e.id} status={e.status} props={this.props} />;
-					}
-				})}
+				<DropdownSelectNode node={this.state.node} onChange={this.handleChange}/>
+				<ControlDevice mqtt={this.props} devices={this.state.devices} />
 				<Table definition>
 					<Table.Header>
 						<Table.Row>
