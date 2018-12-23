@@ -1,0 +1,14 @@
+// mqtt pub -t 'hello' -h 'pi.toannhu.com' -m '{
+// 	"id": 1,
+// 	"day": "1",
+// 	"temp": 50,
+// 	"humd": 100,
+// 	"light": "80%"
+// }'
+{
+	"id": 1,
+	"day": "1",
+	"temp": 50,
+	"humd": 100,
+	"light": "80%"
+}
