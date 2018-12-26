@@ -82,7 +82,7 @@ export default class RegionInfo extends Component {
 					<h1 className="App-title">Welcome to Smart Farm Monitor</h1>
 				</header>
 				<div className="menu">
-					<MenuPage />
+					<MenuPage {...this.props.info} />
 				</div>
 				<div style={{"margin":"20px"}}>
 					<Input 

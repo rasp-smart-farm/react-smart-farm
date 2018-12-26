@@ -66,7 +66,7 @@ export default function withAuthenticated(WrappedComponent) {
 			}
 			
 			if (this.state.isLoggedIn) {
-				return (<WrappedComponent data={this.state.data} {...this.props} />);
+				return (<WrappedComponent info={this.state.info} {...this.props} />);
 			} else {
 				return (<Confirm 
 					header="Alert Message"

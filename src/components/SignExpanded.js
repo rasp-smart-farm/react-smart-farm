@@ -79,14 +79,17 @@ class SignExpanded extends Component {
 		let self = this;
 		axios.post('http://pi.toannhu.com:4000/users/login', {
 				email: this.state.username,
-				password: this.state.password
+				password: this.state.password,
+			}, {
+				withCredentials: true,
+        		crossdomain: true
 			})
 			.then(function (response) {
 				if (response.hasOwnProperty("data")) {
 					if (response.data.error === 1) {
 						self.setState({open: true, message: response.data.data});
 					} else if (response.data.error === 0) {
-						Cookies.set("token", response.data.data);
+						// Cookies.set("token", response.data.data);
 						history.push("/");
 					}
 				}
@@ -104,10 +107,6 @@ class SignExpanded extends Component {
 		this.setState({ inputTypePassword: 'password' });
 	}
 
-	refresh = () => { 
-		this.setState({ open: false, username:'', password:'' })
-		history.push('/login');
-	}
   	closeMessage = () => this.setState({ open: false });
 
 	render () {
@@ -123,10 +122,10 @@ class SignExpanded extends Component {
 					return (<Confirm 
 						header="Alert"
 						size="large"
-						cancelButton="Refresh"
+						cancelButton="Cancel"
 						confirmButton="OK"
 						open={this.state.open} 
-						onCancel={this.refresh} 
+						onCancel={this.closeMessage} 
 						onConfirm={this.closeMessage} 
 						content={this.state.message}
 					/>);

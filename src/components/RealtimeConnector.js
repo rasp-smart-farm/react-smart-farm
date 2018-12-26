@@ -19,7 +19,7 @@ export default class RealtimeConnector extends Component {
 					<h1 className="App-title">Welcome to Smart Farm Monitor</h1>
 				</header>
 				<div className="menu">
-					<MenuPage />
+					<MenuPage {...this.props.info} />
 				</div>
 				<Connector mqttProps="ws://tts.toannhu.com:8080">
 					<RealtimeInfo data={this.props.data} />
