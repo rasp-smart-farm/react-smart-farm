@@ -116,5 +116,5 @@ class TableMqtt extends Component {
 }
 
 export default subscribe({
-	topic: 'myTopic'
+	topic: 'realtime'
 })(TableMqtt);
