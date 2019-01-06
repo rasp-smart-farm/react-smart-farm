@@ -67,7 +67,7 @@ export default class RegionInfo extends Component {
 
 	componentDidMount = () => {
 		axios
-			.get("http://pi.toannhu.com:3000/region/all")
+			.get("http://tts.toannhu.com:3000/region/all")
 			.then(response => response.data)
 			.then(result => this.setState({ plants: result.data }))
 			.catch(error => console.log(error));

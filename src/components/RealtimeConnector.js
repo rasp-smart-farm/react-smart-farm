@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Connector } from "mqtt-react";
 import RealtimeInfo from './RealtimeInfo';
+import DropdownSelectNode from './DropdownSelectNode';
 import Footer from "./Footer";
 import logo from "../logo.svg";
 import MenuPage from './MenuPage';
@@ -21,6 +22,7 @@ export default class RealtimeConnector extends Component {
 				<div className="menu">
 					<MenuPage {...this.props.info} />
 				</div>
+				<DropdownSelectNode />
 				<Connector mqttProps="ws://tts.toannhu.com:8080">
 					<RealtimeInfo data={this.props.data} />
 				</Connector>

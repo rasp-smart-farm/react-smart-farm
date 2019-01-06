@@ -15,9 +15,8 @@ export default class App extends Component {
 
 	//Them vao phan check error code 
 	clickButton = (event, data) => {
-		console.log(data);
 		if (data["checked"] === true) {
-			axios.get('http://pi.toannhu.com:3000/region/on/?node=' + this.state.devices.name + '&device=' + data["id"])
+			axios.get('http://tts.toannhu.com:3000/region/on/?node=' + this.state.devices.name + '&device=' + data["id"])
 				.then(response => {
 					if (response.data.error === 0) {
 						let control = [];	
@@ -30,7 +29,7 @@ export default class App extends Component {
 					alert("Fail to connect server! Please try again!");
 				})
 		} else if (data["checked"] === false) {
-			axios.get('http://pi.toannhu.com:3000/region/off/?node=' + this.state.devices.name + '&device=' + data["id"])
+			axios.get('http://tts.toannhu.com:3000/region/off/?node=' + this.state.devices.name + '&device=' + data["id"])
 				.then(response => {
 					if (response.data.error === 0) {
 						let newDevices = Object.assign({}, this.state.devices);

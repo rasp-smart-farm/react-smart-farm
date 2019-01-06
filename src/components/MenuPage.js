@@ -22,7 +22,6 @@ export default class MenuPage extends Component {
 
 	render() {
 		const { activeItem } = this.state
-		console.log(this.props)
 		return (
 		<Menu secondary>
 			<Menu.Item>
